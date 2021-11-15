@@ -1,1 +1,1 @@
-Tämä tiedosto on branchissa haara2
+Tämä tiedosto on branchissa haara2. Siihen ollaan tehty muutoksia repositortion kahdessa kloonissa.
