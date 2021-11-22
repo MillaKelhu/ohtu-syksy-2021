@@ -1,4 +1,5 @@
 from entities.user import User
+import string
 
 
 class UserInputError(Exception):
@@ -37,4 +38,18 @@ class UserService:
         if not username or not password:
             raise UserInputError("Username and password are required")
 
-        # toteuta loput tarkastukset tänne ja nosta virhe virhetilanteissa
+        if len(username) < 3:
+            raise UserInputError("Username is too short")
+
+        if len(password) < 8:
+            raise UserInputError("Password is too short")
+
+        letters = string.ascii_letters + "åäöÅÄÖ"
+        only_letters = True
+        for character in password:
+            if character not in letters:
+                only_letters = False
+                break
+        if only_letters:
+            raise UserInputError("Password must contain at least one number or special character")
+
