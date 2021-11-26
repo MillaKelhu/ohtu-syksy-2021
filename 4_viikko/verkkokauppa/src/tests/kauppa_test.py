@@ -77,3 +77,45 @@ class TestKauppa(unittest.TestCase):
         self.kauppa.tilimaksu("pekka", "12345")
 
         self.pankki_mock.tilisiirto.assert_called_with("pekka", 42, "12345", "33333-44455", 7)
+
+    def test_asioinnin_aloittaminen_nollaa_edellisen_ostoken_tiedot(self):
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.tilimaksu("pekka", "12345")
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu("maija", "56789")
+
+        self.pankki_mock.tilisiirto.assert_called_with("maija", 42, "56789", "33333-44455", 5)
+
+    def test_kauppa_pyytää_uuden_viitenumeron_jokaiselle_maksutapahtumalle(self):
+        self.viitegeneraattori_mock.uusi.side_effect = [42, 43, 44]
+        
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu("pekka", "12345")
+
+        self.pankki_mock.tilisiirto.assert_called_with("pekka", 42, "12345", "33333-44455", 5)
+
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.tilimaksu("maija", "56789")
+
+        self.pankki_mock.tilisiirto.assert_called_with("maija", 43, "56789", "33333-44455", 7)
+
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.tilimaksu("liisa", "13579")
+
+        self.pankki_mock.tilisiirto.assert_called_with("liisa", 44, "13579", "33333-44455", 12)
+
+    def test_ostoksen_paatyttya_kun_korista_poistettu_tuote_pankin_metodia_tilisiirto_kutsutaan_oikeilla_argumenteilla(self):
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.poista_korista(2)
+        self.kauppa.tilimaksu("pekka", "12345")
+
+        self.pankki_mock.tilisiirto.assert_called_with("pekka", 42, "12345", "33333-44455", 5)
