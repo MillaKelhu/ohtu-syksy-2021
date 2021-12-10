@@ -8,7 +8,13 @@ def main():
     stats = Statistics(reader)
 
     query = QueryBuilder()
-    matcher = query.build()
+
+    matcher = (
+        query
+            .playsIn("NYR")
+            .hasAtLeast(5, "goals")
+            .hasFewerThan(10, "goals")
+            .build())
 
     for player in stats.matches(matcher):
         print(player)
