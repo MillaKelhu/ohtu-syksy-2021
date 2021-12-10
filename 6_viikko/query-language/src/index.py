@@ -15,8 +15,13 @@ def main():
 #    )
 
 #    Tehtävä 2 matcher testaus
+#    matcher = And(
+#        Not(HasAtLeast(1, "goals")),
+#        PlaysIn("NYR")
+#    )
+
     matcher = And(
-        Not(HasAtLeast(1, "goals")),
+        HasFewerThan(1, "goals"),
         PlaysIn("NYR")
     )
 
