@@ -30,7 +30,7 @@ class All:
     def __init__(self):
         pass
 
-    def matches(self, player):
+    def matches(self):
         return True
 
 class Not:
