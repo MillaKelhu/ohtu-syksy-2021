@@ -38,12 +38,13 @@ class TekoalyParannettu:
         # - jos papereita eniten, annetaan aina sakset
         # muulloin annetaan aina kivi
         eniten = max(siirrot, key=lambda siirto: siirrot[siirto])
+        paras_siirto_kun = {
+                            'k': 'p',
+                            'p': 's',
+                            's': 'k'
+                            }
 
-        if eniten == 'k':
-            return 'p'
-        elif eniten == 'p':
-            return 's'
-        return 'k'
+        return paras_siirto_kun[eniten]
 
         # Tehokkaampiakin tapoja löytyy, mutta niistä lisää
         # Johdatus Tekoälyyn kurssilla!
