@@ -1,6 +1,5 @@
 from kps_pelaaja_vs_pelaaja import KPSPelaajaVsPelaaja
 from kps_tekoaly import KPSTekoaly
-from kps_parempi_tekoaly import KPSParempiTekoaly
 
 
 def main():
@@ -14,13 +13,13 @@ def main():
 
         vastaus = input()
         pelit = {
-                'a': KPSPelaajaVsPelaaja,
-                'b': KPSTekoaly,
-                'c': KPSParempiTekoaly
+                'a': KPSPelaajaVsPelaaja(),
+                'b': KPSTekoaly(),
+                'c': KPSTekoaly(parempi=True)
                 }
         try:
             peli = pelit[vastaus]
-            peli().pelaa()
+            peli.pelaa()
         except Exception:
             break
 
